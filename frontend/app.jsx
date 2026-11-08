@@ -1,6 +1,11 @@
 import { useState } from 'react'
 
 function App() {
+    const fileInputRef = useRef(null)
+
+    const handleSubmit = (event) => {
+       // needs to create a post request to the backend with the uploaded CSV file
+    }
 
     return (
         <div style = {{
@@ -10,9 +15,9 @@ function App() {
             margin: 0,
             padding: 0
         }}>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <input type="file" ref={fileInputRef} accept=".csv" />
-                <button type="submit">Upload CSV</button>
+                <button id="upload-button" type="submit">Upload CSV</button>
             </form>
         </div>
     );
