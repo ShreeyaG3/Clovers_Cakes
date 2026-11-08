@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useRef } from 'react'
 
+
 function App() {
+
     return (
         <div style = {{
             backgroundColor: 'white',
@@ -9,7 +11,12 @@ function App() {
             height: '100vh',
             margin: 0,
             padding: 0
-        }} />
+        }}>
+            <form>
+                <input type="file" ref={fileInputRef} accept=".csv" />
+                <button type="submit">Upload CSV</button>
+            </form>
+        </div>
     );
 }
 
