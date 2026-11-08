@@ -1,4 +1,5 @@
 import csv
+from io import StringIO
 from fastapi import FastAPI, File, UploadFile
 
 # Initialize the app
@@ -11,9 +12,8 @@ def read_root():
 
 # Define a route for uploading CSV files
 @app.post("/upload-csv/")
-def upload_csv(file: UploadFile = File(...)):
-    contents = file.file.read()
-    file.file.seek(0)
-    reader = csv.reader(file.file)
+async def upload_csv(file: UploadFile = File(...)):
+    contents = await file.read()
+    reader = csv.reader(StringIO(contents.decode("utf-8")))
     data = list(reader)
     return {"message": "CSV file uploaded successfully.", "data": data}
