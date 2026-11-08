@@ -1,10 +1,41 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 function App() {
     const fileInputRef = useRef(null)
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
        // needs to create a post request to the backend with the uploaded CSV file
+       event.preventDefault()
+
+       const file = fileInputRef.current.files[0]
+       // check if a file was selected
+       if (!file) {
+            setMessage('Please choose a CSV file first.')
+            return
+        }
+
+        // creates a FormData object to hold uploaded csv file
+        const formData = new FormData()
+        formData.append('file', file)
+
+        //createst the post request to the backend with the uploaded CSV file
+        try {
+            const response = await fetch('http://127.0.0.1:8000/upload-csv/', {
+                method: 'POST',
+                body: formData,
+            })
+
+            const result = await response.json()
+            if (!response.ok) {
+                throw new Error(result.detail || 'Upload failed.')
+            }
+
+            setMessage(result.message)
+            console.log('CSV data returned by backend:', result.data)
+        } catch (error) {
+            //error handling for uploading process
+            setMessage(error instanceof Error ? error.message : 'Upload failed.')
+        }
     }
 
     return (
