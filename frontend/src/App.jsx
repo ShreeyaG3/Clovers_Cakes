@@ -43,6 +43,7 @@ function App() {
     }
 
     return (
+        <>
         <div id="file-upload-container" style = {{
             backgroundColor: 'white',
             width: '100vw',
@@ -58,6 +59,7 @@ function App() {
             {/* this is the message area for displaying upload status */}
             <p>{message}</p>
         </div>
+        </>
     );
 }
 
