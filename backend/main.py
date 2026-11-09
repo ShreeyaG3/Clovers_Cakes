@@ -1,9 +1,19 @@
 import csv
 from io import StringIO
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize the app
 app = FastAPI()
+
+# Add CORS middleware to allow frontend to make requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Define a route for the root URL ("/")
 @app.get("/")
