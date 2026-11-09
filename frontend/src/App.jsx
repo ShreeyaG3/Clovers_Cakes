@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { supabase } from '../utils/supabase.ts'
 
 function App() {
     const fileInputRef = useRef(null)
@@ -19,10 +20,27 @@ function App() {
         const formData = new FormData()
         formData.append('file', file)
 
-        //creates the post request to the backend with the uploaded CSV file
+        let storageErrorMessage = ''
         try {
-            setMessage('Uploading CSV file...')
+            setMessage('Saving CSV file to Supabase...')
 
+            const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+            const objectPath = `${crypto.randomUUID()}-${safeFileName}`
+            const { error: storageError } = await supabase.storage
+                .from('csv-uploads')
+                .upload(objectPath, file, {
+                    contentType: file.type || 'text/csv',
+                })
+
+            if (storageError) {
+                storageErrorMessage = storageError.message
+            }
+        } catch (error) {
+            storageErrorMessage = error instanceof Error ? error.message : 'Unknown storage error.'
+        }
+
+        try {
+            setMessage('Processing CSV file...')
             const response = await fetch('http://127.0.0.1:8000/upload-csv/', {
                 method: 'POST',
                 body: formData,
@@ -33,12 +51,17 @@ function App() {
                 throw new Error(result.detail || 'Upload failed.')
             }
 
-            setMessage(`Upload successful. ${JSON.stringify(result.data)}`)
+            const storageStatus = storageErrorMessage
+                ? `Supabase save failed: ${storageErrorMessage}. `
+                : 'CSV saved to Supabase. '
+            setMessage(`${storageStatus}Backend processing succeeded. ${JSON.stringify(result.data)}`)
             console.log('CSV data returned by backend:', result.data)
         } catch (error) {
-            //error handling for uploading process
-            setMessage(error instanceof Error ? error.message : 'Upload failed.')
-
+            const backendError = error instanceof Error ? error.message : 'Unknown backend error.'
+            const storageStatus = storageErrorMessage
+                ? `Supabase save failed: ${storageErrorMessage}. `
+                : 'CSV saved to Supabase, but '
+            setMessage(`${storageStatus}backend processing failed: ${backendError}`)
         }
     }
 
