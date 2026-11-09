@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # 1. Replace with your actual Supabase Database URL
-SUPABASE_URL = "database url"
+SUPABASE_URL = "postgresql://postgres:cloverscake_lift@db.psggmnchbwohvqpzltnv.supabase.co:5432/postgres"
 
 # Setup SQLAlchemy engine
 engine = create_engine(SUPABASE_URL)
