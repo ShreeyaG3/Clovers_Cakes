@@ -2,6 +2,17 @@ import csv
 from io import StringIO
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+# 1. Replace with your actual Supabase Database URL
+SUPABASE_URL = "database url"
+
+# Setup SQLAlchemy engine
+engine = create_engine(SUPABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
 # Initialize the app
 app = FastAPI()

@@ -33,7 +33,7 @@ function App() {
                 throw new Error(result.detail || 'Upload failed.')
             }
 
-            setMessage(`Upload successful.`)
+            setMessage(`Upload successful. ${JSON.stringify(result.data)}`)
             console.log('CSV data returned by backend:', result.data)
         } catch (error) {
             //error handling for uploading process
