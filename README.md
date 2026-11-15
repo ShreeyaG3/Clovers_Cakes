@@ -1,3 +1,5 @@
+# Clovers_Cakes
+Building a dashboard for a small business bakery Clovers Cake 
 # Clovers Cakes — Bakery Sales Analytics
 
 A two-page React + FastAPI application for importing Square transaction CSV exports and exploring saved sales analytics.
