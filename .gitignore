@@ -1,4 +1,15 @@
-# Logs
+.env
+.env.*
+!.env.example
+backend/data/*.db
+backend/.venv/
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
+
+.DS_Store
+**/.DS_Store# Logs
 logs
 *.log
 npm-debug.log*
